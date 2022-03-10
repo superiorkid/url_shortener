@@ -1,67 +1,66 @@
-const shortid = require('shortid')
 const validUrl = require('valid-url')
+const fetch = require('node-fetch')
 
-const { Url } = require('../models/urlModel')
-require('dotenv').config({path: './.env'})
+const { urlModels } = require('../models/urlModel')
+require('dotenv').config()
 
+const getAllData = (req, res) => {
 
-const get_all_url = (req, res) => {
-
-  Url.find().sort({createdAt: -1})
-  .then(result => {
-    res.status(200).send(result)
-  })
-  .catch(err => {
-    res.status(400).send(err)
-  })
+  urlModels.find().sort({createdAt: -1})
+    .then(result => {
+      res.send(result)
+    })
+    .catch(err => {
+      res.send(err)
+    })
 
 }
 
 
 const shorting = async (req, res) => {
+  const original_link = req.body.original_link
+  const url = process.env.BASE_URI + 'shorten?url=' + original_link
 
-  const longURL = req.body
-  const base = process.env.BASE_URI
-  const urlId = shortid.generate()
-  
-  if (validUrl.isUri(longURL)) {
+  if (validUrl.isUri(url)) {
 
-    try {
-      const url = await Url.findOne({longURL})
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
 
-      if (url) {
+      const urls = urlModels.findOne({original_link: original_link})
 
-        res.json(url)
-
+      if (urls) {
+        res.send("data is available")
       } else {
-        
-        const shortURL = `${base}/${urlId}`
-
-        url = new Url({
-          longURL,
-          shortURL
+        const url = new urlModels({
+          code: data.result.code,
+          short_link: data.result.short_link,
+          full_short_link: data.result.full_short_link,
+          original_link: data.result.original_link
         })
 
-        await url.save
-        res.json(url)
-
+        url.save()
+        res.send(url)
       }
-    } catch(err) {
-      console.log(err)
-      res.status(500).json('server error')
-    }
+
+      // const url = new urlModels({
+      //   code: data.result.code,
+      //   short_link: data.result.short_link,
+      //   full_short_link: data.result.full_short_link,
+      //   original_link: data.result.original_link
+      // })
+
+      // url.save()
+      // res.send(url)
+
+
+    })
+    .catch(err => res.send(err))
 
   } else {
-
-    res.status(400).json('invalid original url')
-
+    res.send('URL not valid')
   }
-  
 
 }
 
-
-module.exports = {
-  shorting, 
-  get_all_url
-}
+module.exports = { getAllData, shorting }

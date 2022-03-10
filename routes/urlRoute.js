@@ -1,11 +1,12 @@
 const express = require('express')
+
+const urlController = require('../controllers/urlController')
+
 const router = express.Router()
 
-const { shorting, get_all_url } = require('../controllers/urlController')
 
-
-router.post('/', shorting)
-router.get('/', get_all_url)
+router.get('/', urlController.getAllData)
+router.post('/', urlController.shorting)
 
 
 module.exports = router
