@@ -6,6 +6,7 @@ const router = express.Router()
 
 
 router.get('/', urlController.getAllData)
+// router.get('/:url', urlController.get_url_by_name)
 router.post('/', urlController.shorting)
 
 

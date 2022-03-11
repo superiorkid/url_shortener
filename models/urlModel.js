@@ -8,6 +8,8 @@ const urlSchema = new Schema({
   full_short_link: String,
   original_link: String
 
+}, {
+  timestamps: true
 })
 
 const urlModels = mongoose.model("urls", urlSchema)
