@@ -16,6 +16,20 @@ const getAllData = (req, res) => {
 
 }
 
+const get_data_byCode = (req, res) => {
+
+  const code = req.params.code
+
+  urlModels.findOne({code})
+    .then(result => {
+      res.status(200).send(result)
+    })
+    .catch(err => {
+      res.status(400).send(err)
+    })
+
+}
+
 
 const shorting = (req, res) => {
   const original_link = req.body.original_link
@@ -47,7 +61,7 @@ const shorting = (req, res) => {
       })
 
     })
-    .catch(err => res.send(err))
+    .catch(err => res.status(400).send(err))
 
   } else {
     res.send('URL not valid')
@@ -56,7 +70,27 @@ const shorting = (req, res) => {
 }
 
 
+const delete_url = (req, res) => {
+
+  const code = req.params.code
+
+  urlModels.findOneAndDelete({code})
+    .then(result => {
+      console.log('Delete Successfully');
+      res.status(200).send(result)
+    })
+    .catch(err => {
+      res.status(400).send(err)
+    })
+
+}
 
 
 
-module.exports = { getAllData, shorting }
+
+module.exports = {
+  getAllData,
+  shorting,
+  delete_url,
+  get_data_byCode
+}
