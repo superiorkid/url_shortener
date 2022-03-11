@@ -46,7 +46,7 @@ const shorting = (req, res) => {
 
       query.findOne((err, urls) => {
         if (urls) {
-          res.send('Data is available')
+          res.status(400).send('Data is available')
         } else {
           const url = new urlModels({
             code: data.result.code,
@@ -61,7 +61,7 @@ const shorting = (req, res) => {
       })
 
     })
-    .catch(err => res.status(400).send(err))
+    .catch(err => res.status(500).send(err))
 
   } else {
     res.send('URL not valid')
@@ -84,8 +84,6 @@ const delete_url = (req, res) => {
     })
 
 }
-
-
 
 
 module.exports = {
