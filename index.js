@@ -11,7 +11,7 @@ const urlRoute = require('./routes/urlRoute')
 require('dotenv').config()
 
 const app = express()
-const PORT = 8080
+const PORT = 8000
 
 nunjucks.configure('views', {
   autoescape: true,
@@ -24,20 +24,17 @@ nunjucks.configure('views', {
 
 app.set('view engine', 'html')
 
-app.use(bodyParser.json())
+app.use(bodyParser.json()) // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
+  extented: true
+}))
 app.use(cors())
 app.use(morgan('dev'))
 
 
 app.use(express.static(__dirname + '/public'))
 
-app.use('/url', urlRoute)
-
-app.get('*', (req, res) => {
-  res.send('What??', 404)
-})
-
-
+app.use('/', urlRoute)
 
 
 // connect to database

@@ -2,6 +2,7 @@ const validUrl = require('valid-url')
 const fetch = require('node-fetch')
 
 const { urlModels } = require('../models/urlModel')
+const Form = require('../models/urlModel')
 require('dotenv').config()
 
 const getAllData = (req, res) => {
@@ -34,8 +35,12 @@ const get_data_byCode = (req, res) => {
 
 }
 
+const submission = (req, res) => {
+  res.render('add_data')
+}
 
 const shorting = (req, res) => {
+
   const original_link = req.body.original_link
   const url = process.env.BASE_URI + 'shorten?url=' + original_link
 
@@ -45,22 +50,21 @@ const shorting = (req, res) => {
     .then(response => response.json())
     .then(data => {
 
-
       const query = urlModels.where({original_link})
 
       query.findOne((err, urls) => {
         if (urls) {
           res.status(400).send('Data is available')
         } else {
-          const url = new urlModels({
+          const newUrl = new urlModels({
             code: data.result.code,
             short_link: data.result.short_link,
             full_short_link: data.result.full_short_link,
             original_link: data.result.original_link
           })
 
-          url.save()
-          res.status(201).send(url)
+          newUrl.save()
+          res.status(201).redirect('/')
         }
       })
 
@@ -94,5 +98,6 @@ module.exports = {
   getAllData,
   shorting,
   delete_url,
-  get_data_byCode
+  get_data_byCode,
+  submission
 }
