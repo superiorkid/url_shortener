@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p class="h2 mb-2">Show All Data</p>
+
+<div class="d-grid gap-2 d-md-block">
+  <button type="button" class="btn btn-primary btn-sm mt-2 mb-1"><a href="./add_data.html">Tambah Data</a></button>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Code</th>
+      <th scope="col">ShortLink</th>
+      <th scope="col">Full Short Link</th>
+      <th scope="col">Original Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for elem in result %}
+    <tr>
+      <th scope="row">{{ loop.index }}</th>
+      <td>{{ elem.code }}</td>
+      <td>{{ elem.short_link }}</td>
+      <td>{{ elem.full_short_link}}</td>
+      <td>{{ elem.original_link}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}

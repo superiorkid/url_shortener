@@ -27,8 +27,8 @@ To get Node server running locally:
  - `index.js` - The entry point to your application. This defines our express server and connects it to MongoDB using mongoose. it also requires the routes and models we'll be using in the application.
  - `routes/` - this folder contains the route definitions for our API
  - `models/` - this folder contains the schema definitions our Mongoose models.
- - `controllers` - a contollers handles user request and returns a reponse.
- - `views` - this folder contains HTML files for the application.
+ - `controllers/` - a contollers handles user request and returns a reponse.
+ - `views/` - this folder contains HTML files for the application.
 ## Authors
 
 - [@superiorkid](https://www.github.com/superiorkid)

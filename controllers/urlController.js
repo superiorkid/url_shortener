@@ -6,13 +6,17 @@ require('dotenv').config()
 
 const getAllData = (req, res) => {
 
-  urlModels.find().sort({createAt: -1})
+  const allData = urlModels.find().sort({createAt: -1})
     .then(result => {
-      res.status(200).send(result)
+      res.status(200).render('index', {
+        result,
+        title: "Show All Data"
+      })
     })
     .catch(err => {
       res.status(400).send(err)
     })
+
 
 }
 
