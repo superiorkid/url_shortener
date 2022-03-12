@@ -4,7 +4,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const nunjucks = require('nunjucks')
-// const chokidar = require('chokidar')
 
 const urlRoute = require('./routes/urlRoute')
 
@@ -18,9 +17,6 @@ nunjucks.configure('views', {
   express: app
 })
 
-// chokidar.watch('.').on('all', (event, path) => {
-//   console.log(event, path)
-// })
 
 app.set('view engine', 'html')
 
@@ -39,12 +35,12 @@ app.use('/', urlRoute)
 
 // connect to database
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
-  .then(() => {
-    console.log('Database is Connected')
+.then(() => {
+  console.log('Database is Connected')
 
-    app.listen(PORT, () => {
-      console.log(`Server listen on port : http://localhost:${PORT}`)
-    })
-
+  app.listen(PORT, () => {
+    console.log(`Server listen on port : http://localhost:${PORT}`)
   })
-  .catch((err) => console.log(err))
+
+})
+.catch((err) => console.log(err))

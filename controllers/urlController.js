@@ -8,15 +8,15 @@ require('dotenv').config()
 const getAllData = (req, res) => {
 
   const allData = urlModels.find().sort({createAt: -1})
-    .then(result => {
-      res.status(200).render('index', {
-        result,
-        title: "Show All Data"
-      })
+  .then(result => {
+    res.status(200).render('index', {
+      result,
+      title: "Show All Data"
     })
-    .catch(err => {
-      res.status(400).send(err)
-    })
+  })
+  .catch(err => {
+    res.status(400).send(err)
+  })
 
 
 }
@@ -26,12 +26,12 @@ const get_data_byCode = (req, res) => {
   const code = req.params.code
 
   urlModels.findOne({code})
-    .then(result => {
-      res.status(200).send(result)
-    })
-    .catch(err => {
-      res.status(400).send(err)
-    })
+  .then(result => {
+    res.status(200).send(result)
+  })
+  .catch(err => {
+    res.status(400).send(err)
+  })
 
 }
 
@@ -54,7 +54,7 @@ const shorting = (req, res) => {
 
       query.findOne((err, urls) => {
         if (urls) {
-          res.status(400).send('Data is available')
+          res.status(409).send('Data is available')
         } else {
           const newUrl = new urlModels({
             code: data.result.code,
@@ -72,7 +72,11 @@ const shorting = (req, res) => {
     .catch(err => res.status(500).send(err))
 
   } else {
-    res.send('URL not valid')
+
+    req.flash('info', 'URL not valid')
+    res.status(400).redirecT('/add')
+
+    // res.status(400).send('URL not valid')
   }
 
 }
@@ -83,13 +87,13 @@ const delete_url = (req, res) => {
   const code = req.params.code
 
   urlModels.findOneAndDelete({code})
-    .then(result => {
-      console.log('Delete Successfully');
-      res.status(200).send(result)
-    })
-    .catch(err => {
-      res.status(400).send(err)
-    })
+  .then(result => {
+    console.log('Delete Successfully');
+    res.status(200).redirect('/')
+  })
+  .catch(err => {
+    res.status(404).send(err)
+  })
 
 }
 

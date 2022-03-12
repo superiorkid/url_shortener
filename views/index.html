@@ -26,7 +26,7 @@
       <td>{{ elem.short_link }}</td>
       <td>{{ elem.full_short_link}}</td>
       <td>{{ elem.original_link}}</td>
-      <td><button class="btn btn-warning">Delete</button></td>
+      <td><a href="/delete/{{elem.code}}" class="btn btn-info" role="button">Delete</a></td>
     </tr>
     {% endfor %}
   </tbody>

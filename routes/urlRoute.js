@@ -10,7 +10,7 @@ router.post('/add', urlController.shorting)
 
 router.get('/', urlController.getAllData)
 router.get('/:code', urlController.get_data_byCode)
-router.delete('/:code', urlController.delete_url)
+router.all('/delete/:code', urlController.delete_url)
 
 
 module.exports = router
