@@ -18,15 +18,15 @@
 
   <div class="container mt-3">
 
-
+  {# flash message #}
   {% for msg in message %}
-    <div class="alert alert-warning" role="alert">
-    {{ msg }}
-    </div>
+    {% if msg.info %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{msg.info}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
   {% endfor %}
-
-
-
 
   {% block content %}
   {% endblock content %}

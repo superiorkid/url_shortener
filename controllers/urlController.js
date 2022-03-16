@@ -21,22 +21,22 @@ const getAllData = (req, res) => {
 
 }
 
-const get_data_byCode = (req, res) => {
+// const get_data_byCode = (req, res) => {
 
-  const code = req.params.code
+//   const code = req.params.code
 
-  urlModels.findOne({code})
-  .then(result => {
-    res.status(200).send(result)
-  })
-  .catch(err => {
-    res.status(400).send(err)
-  })
+//   urlModels.findOne({code})
+//   .then(result => {
+//     res.status(200).send(result)
+//   })
+//   .catch(err => {
+//     res.status(400).send(err)
+//   })
 
-}
+// }
 
 const submission = (req, res) => {
-  const message = req.flash('info') || req.flash('success')
+  const message = req.flash('info')
 
   res.render('add_data', {
     title: "Add Data",
@@ -50,7 +50,7 @@ const shorting = (req, res) => {
   const url = process.env.BASE_URI + 'shorten?url=' + original_link
 
   if (!validUrl.isUri(original_link)) {
-    req.flash("info", "URL not valid")
+    req.flash("info", {"info": "URL not valid"})
     res.redirect('/add')
   } else {
     fetch(url)
@@ -61,7 +61,7 @@ const shorting = (req, res) => {
 
       query.findOne((err, urls) => {
         if (urls) {
-          req.flash('info', 'Data is Available')
+          req.flash('info', {"info": "Data is Available"})
           res.status(409).redirect('/add')
         } else {
           const newUrl = new urlModels({
@@ -75,8 +75,7 @@ const shorting = (req, res) => {
             if (err) {
               console.log(err)
             }
-            console.log('Data was save successfully')
-            req.flash('success', 'Data was save successfully')
+            req.flash('info', {"info": "Data saved successfully."})
             res.redirect('/add')
           })
         }
@@ -95,7 +94,6 @@ const delete_url = (req, res) => {
 
   urlModels.findOneAndDelete({code})
   .then(result => {
-    console.log('Delete Successfully');
     res.status(200).redirect('/')
   })
   .catch(err => {
@@ -109,6 +107,5 @@ module.exports = {
   getAllData,
   shorting,
   delete_url,
-  get_data_byCode,
   submission
 }

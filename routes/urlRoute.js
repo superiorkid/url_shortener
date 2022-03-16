@@ -9,7 +9,7 @@ router.get('/add', urlController.submission)
 router.post('/add', urlController.shorting)
 
 router.get('/', urlController.getAllData)
-router.get('/:code', urlController.get_data_byCode)
+// router.get('/:code', urlController.get_data_byCode)
 router.all('/:code/delete', urlController.delete_url)
 
 

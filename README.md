@@ -3,6 +3,10 @@
 
 Simple project to learn Node with express and MongoDB.
 
+## API
+
+> https://api.shrtco.de/v2/
+
 ## Getting Started
 
 To get Node server running locally:
