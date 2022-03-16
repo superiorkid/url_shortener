@@ -25,6 +25,8 @@ To get Node server running locally:
  - [morgan](https://www.npmjs.com/package/morgan) - HTTP request logger middleware for node.js
  - [node-fetch](https://www.npmjs.com/package/node-fetch) - A light-weight module than brings Fetch API to node.js
  - [valid-url](https://www.npmjs.com/package/valid-url) - URI validation function.
+ - [nunjucks](https://www.npmjs.com/package/nunjucks) - Nunjucks is a full featured templating engine for javascript. It is heavily inspired by Jinja2.
+- `etc...`
 
 ### Application Structure
 
