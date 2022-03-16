@@ -36,7 +36,12 @@ const get_data_byCode = (req, res) => {
 }
 
 const submission = (req, res) => {
-  res.render('add_data')
+  const message = req.flash('info') || req.flash('success')
+
+  res.render('add_data', {
+    title: "Add Data",
+    message
+  })
 }
 
 const shorting = (req, res) => {
@@ -44,8 +49,10 @@ const shorting = (req, res) => {
   const original_link = req.body.original_link
   const url = process.env.BASE_URI + 'shorten?url=' + original_link
 
-  if (validUrl.isUri(url)) {
-
+  if (!validUrl.isUri(original_link)) {
+    req.flash("info", "URL not valid")
+    res.redirect('/add')
+  } else {
     fetch(url)
     .then(response => response.json())
     .then(data => {
@@ -54,7 +61,8 @@ const shorting = (req, res) => {
 
       query.findOne((err, urls) => {
         if (urls) {
-          res.status(409).send('Data is available')
+          req.flash('info', 'Data is Available')
+          res.status(409).redirect('/add')
         } else {
           const newUrl = new urlModels({
             code: data.result.code,
@@ -63,22 +71,21 @@ const shorting = (req, res) => {
             original_link: data.result.original_link
           })
 
-          newUrl.save()
-          res.status(201).redirect('/')
+          newUrl.save((err) => {
+            if (err) {
+              console.log(err)
+            }
+            console.log('Data was save successfully')
+            req.flash('success', 'Data was save successfully')
+            res.redirect('/add')
+          })
         }
       })
 
     })
     .catch(err => res.status(500).send(err))
 
-  } else {
-
-    req.flash('info', 'URL not valid')
-    res.status(400).redirecT('/add')
-
-    // res.status(400).send('URL not valid')
   }
-
 }
 
 

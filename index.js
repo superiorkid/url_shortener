@@ -4,6 +4,9 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const nunjucks = require('nunjucks')
+const session = require('express-session')
+const flash = require('connect-flash')
+const cookieParser = require('cookie-parser')
 
 const urlRoute = require('./routes/urlRoute')
 
@@ -18,7 +21,7 @@ nunjucks.configure('views', {
 })
 
 
-app.set('view engine', 'html')
+app.set('view engine', 'njk')
 
 app.use(bodyParser.json()) // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
@@ -27,10 +30,20 @@ app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 app.use(cors())
 app.use(morgan('dev'))
 
+// express-session
+app.use(session({cookie: {maxAge: 60000}, secret: "secret"}))
+app.use(cookieParser('secret'))
+app.use(flash())
 
-app.use(express.static(__dirname + '/public'))
+
+// app.use(express.static(__dirname + '/public'))
 
 app.use('/', urlRoute)
+
+app.all('/flash', (req, res) => {
+  req.flash('success', "it worked")
+  res.redirect('/add')
+})
 
 
 // connect to database
